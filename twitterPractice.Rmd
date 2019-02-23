@@ -1,0 +1,68 @@
+---
+title: "twitter practice"
+author: "SFC"
+date: "2/23/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Install Libraries
+
+
+
+```{r}
+#install the necessary packages
+install.packages("twitteR")
+install.packages("wordcloud")
+install.packages("tm")
+ 
+library(twitteR)
+library(wordcloud)
+library(tm)
+
+
+```
+
+## Twitter Authorization
+
+
+```{r}
+
+ 
+
+ 
+#to get your consumerKey and consumerSecret see the twitteR documentation for instructions
+consumer_key <- 'yvr6juDS7eXLupzMYX17FQY2I'
+consumer_secret <-    'rrTarC1GSt0PvrkHf56bZ5O4wFfpLWyzUqyTOtluJPOKRw7L0f'
+access_token <- '820657692708577281-TF9pAeAHtZz6UGpiToXHf7fPnbtY7hl'
+access_secret <- 'jxsGYPuEExHtuC4tV8pnQ8avUCWjWmnVvqZ8v0yuj1DzD'
+setup_twitter_oauth(consumer_key,
+                    consumer_secret,
+                    access_token,
+                    access_secret)
+
+
+
+```
+
+## Browser Authentication
+```{r}
+pain <- searchTwitter("#pain", n=1500)
+length(pain)
+pain_text <- sapply(pain, function(x) x$getText())
+pain_text_corpus <- Corpus(VectorSource(pain_text))
+
+#clean up
+pain_text_corpus <- tm_map(pain_text_corpus, content_transformer(tolower))
+pain_text_corpus <- tm_map(pain_text_corpus, removePunctuation)
+pain_text_corpus <- tm_map(pain_text_corpus, function(x)removeWords(x,stopwords()))
+wordcloud(pain_text_corpus)
+
+```
+```{r}
+
+
+```
